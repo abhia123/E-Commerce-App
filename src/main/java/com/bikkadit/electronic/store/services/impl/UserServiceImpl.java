@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageableResponse<UserDto> getAllUsers(int pageNumber, int pageSize, String sortBy, String sortDir) {
+    public PageableResponse<UserDto> getAllUsers(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
         logger.info("Initiating dao request for getting all user records");
         Sort sort = (sortDir.equalsIgnoreCase("desc")) ? (Sort.by(sortBy).descending()) : (Sort.by(sortBy).ascending());
         Pageable pageable = PageRequest.of(pageNumber,pageSize,sort);

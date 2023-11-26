@@ -4,6 +4,7 @@ import com.bikkadit.electronic.store.dtos.UserDto;
 import com.bikkadit.electronic.store.helper.ApiResponse;
 import com.bikkadit.electronic.store.helper.AppConstants;
 import com.bikkadit.electronic.store.helper.PageableResponse;
+import com.bikkadit.electronic.store.helper.UrlConstants;
 import com.bikkadit.electronic.store.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(UrlConstants.BASE_URL+UrlConstants.USER_URL)
 public class UserController {
     @Autowired
     private UserService userService;
@@ -29,7 +30,7 @@ public class UserController {
      * @return  created UserDto, HttpStatus.CREATED
      * @since   1.0v
      */
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
         logger.info("Entering request for create new user record ");
         UserDto createdUserDto = userService.createUser(userDto);
@@ -46,7 +47,7 @@ public class UserController {
      * @throws  'Resource Not Found Exception'
      * @since   1.0v
      */
-    @PutMapping("/users/{userId}")
+    @PutMapping("/{userId}")
     public ResponseEntity<UserDto> updateUser(@PathVariable String userId,@Valid @RequestBody UserDto userDto){
 
         logger.info("Entering request for update user record with userId {}:", userId);
@@ -63,7 +64,7 @@ public class UserController {
      * @throws  'Resource Not Found Exception'
      * @since   1.0v
      */
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable String userId) {
         logger.info("Entering request for delete user record with userId {}:", userId);
         userService.deleteUser(userId);
@@ -82,10 +83,10 @@ public class UserController {
      * @return  List<UserDto>
      * @since   1.0v
      */
-    @GetMapping("/users")
+    @GetMapping
     public  ResponseEntity<PageableResponse<UserDto>> getAllUsers(
-            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
             @RequestParam(value = "sortBy", defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
             @RequestParam(value = "sortDir", defaultValue = AppConstants.SORT_DIR, required = false) String sortDir
     ){
@@ -104,7 +105,7 @@ public class UserController {
      * @throws  'Resource Not Found Exception'
      * @since   1.0v
      */
-    @GetMapping("/user/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<UserDto> getUserById(@PathVariable String userId){
         logger.info("Entering request for get user record with userid {}:", userId);
         UserDto userById = userService.getUserById(userId);
@@ -120,7 +121,7 @@ public class UserController {
      * @throws  'Resource Not Found Exception'
      * @since   1.0v
      */
-    @GetMapping("/get-user/{email}")
+    @GetMapping("email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
         logger.info("Entering request for get user record with email {}:", email);
         UserDto userByEmail = userService.getUserByEmail(email);
@@ -135,7 +136,7 @@ public class UserController {
      * @return  UserDto, HttpStatus.OK
      * @since   1.0v
      */
-    @GetMapping("/search-username/{keywords}")
+    @GetMapping("/search/{keywords}")
     public ResponseEntity<List<UserDto>> searchUser(@PathVariable String keywords){
         logger.info("Entering request for get user record with search keywords {}:", keywords);
         List<UserDto> searchUser = userService.searchUser(keywords);

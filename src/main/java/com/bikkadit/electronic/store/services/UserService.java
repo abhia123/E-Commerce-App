@@ -13,7 +13,7 @@ public interface UserService {
 
     void deleteUser(String userId);
 
-    PageableResponse<UserDto> getAllUsers(int pageNumber, int pageSize, String sortBy, String sortDir);
+    PageableResponse<UserDto> getAllUsers(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 
     UserDto getUserById(String userId);
 
