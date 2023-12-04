@@ -20,8 +20,8 @@ public class GlobalExceptionHandler {
 
     private Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler(ResourceNotFondException.class)
-    public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(ResourceNotFondException exception){
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse> resourceNotFoundExceptionHandler(ResourceNotFoundException exception){
         logger.info("Entering ResourceNotFondException Handler...");
         ApiResponse response = ApiResponse.builder().message(exception.getMessage()).success(false).build();
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -38,5 +38,12 @@ public class GlobalExceptionHandler {
                     response.put(field,message);
                 });
         return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadApiRequestException.class)
+    public ResponseEntity<ApiResponse> handleBadApiRequest(BadApiRequestException exception){
+        logger.info("Entering BadApiRequest Handler...");
+        ApiResponse response = ApiResponse.builder().message(exception.getMessage()).success(false).build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

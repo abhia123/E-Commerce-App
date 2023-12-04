@@ -1,19 +1,20 @@
 package com.bikkadit.electronic.store.controllers;
 
 import com.bikkadit.electronic.store.dtos.UserDto;
-import com.bikkadit.electronic.store.helper.ApiResponse;
-import com.bikkadit.electronic.store.helper.AppConstants;
-import com.bikkadit.electronic.store.helper.PageableResponse;
-import com.bikkadit.electronic.store.helper.UrlConstants;
+import com.bikkadit.electronic.store.helper.*;
+import com.bikkadit.electronic.store.services.FileService;
 import com.bikkadit.electronic.store.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -21,6 +22,12 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private FileService fileService;
+
+    @Value("${user.profile.image.path}")
+    private String imageUploadPath;
 
     Logger logger = LoggerFactory.getLogger(UserController.class);
     /***
@@ -143,4 +150,26 @@ public class UserController {
         logger.info("Completed request for get user record with search keywords {}:", keywords);
         return new ResponseEntity<>(searchUser,HttpStatus.OK);
     }
+
+
+    /**
+     * @author  Abhijit Chandsare
+     * @apiNote upload user image
+     * @param   image
+     * @param   userId
+     * @return  ImageResponse, HttpStatus.CREATED
+     * @since   1.0v
+     */
+    @PostMapping("/image/{userId}")
+    public ResponseEntity<ImageResponse> uploadUserImage(@RequestParam("userImage") MultipartFile image, @PathVariable String userId) throws IOException {
+
+        String imageName = fileService.uploadImage(image, imageUploadPath);
+        UserDto user = userService.getUserById(userId);
+        user.setImageName(imageName);
+        UserDto userDto = userService.updateUser(user, userId);
+
+        ImageResponse imageResponse = ImageResponse.builder().imageName(imageName).success(true).status(HttpStatus.CREATED).build();
+        return new ResponseEntity<>(imageResponse,HttpStatus.CREATED);
+    }
+
 }

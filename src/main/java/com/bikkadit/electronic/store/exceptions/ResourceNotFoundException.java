@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResourceNotFondException extends RuntimeException {
+public class ResourceNotFoundException extends RuntimeException {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    public ResourceNotFondException(String message) {
+    public ResourceNotFoundException(String message) {
 
         super(message);
     }

@@ -6,8 +6,7 @@ import org.slf4j.LoggerFactory;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ImageNameValidator implements ConstraintValidator<ImageNameValid,String> {
-
+public class ImageNameValidator implements ConstraintValidator<ImageNameValid, String> {
 
 
     private Logger logger = LoggerFactory.getLogger(ImageNameValidator.class);
