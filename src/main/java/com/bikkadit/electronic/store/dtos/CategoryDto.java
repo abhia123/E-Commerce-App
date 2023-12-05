@@ -21,11 +21,11 @@ public class CategoryDto {
     private String categoryId;
 
     @NotBlank
-    @Min(value = 4, message = "title must be of minimum 4 characters")
+    @Size(min = 4, message = "title must be of minimum 4 characters")
     private String title;
 
     @NotBlank
-    @Min(value = 4, message = "description must be of minimum 4 characters")
+    @Size(min = 4, message = "description must be of minimum 4 characters")
     private String description;
 
     @ImageNameValid

@@ -161,7 +161,7 @@ public class UserController {
      * @since   1.0v
      */
     @PostMapping("/image/{userId}")
-    public ResponseEntity<ImageResponse> uploadUserImage(@RequestParam("userImage") MultipartFile image, @PathVariable String userId) throws IOException {
+    public ResponseEntity<ImageResponse> uploadUserImage(@RequestParam MultipartFile image, @PathVariable String userId) throws IOException {
 
         String imageName = fileService.uploadImage(image, imageUploadPath);
         UserDto user = userService.getUserById(userId);

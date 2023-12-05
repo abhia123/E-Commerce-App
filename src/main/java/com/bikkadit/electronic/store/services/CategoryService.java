@@ -3,8 +3,6 @@ package com.bikkadit.electronic.store.services;
 import com.bikkadit.electronic.store.dtos.CategoryDto;
 import com.bikkadit.electronic.store.helper.PageableResponse;
 
-import java.util.List;
-
 public interface CategoryService {
 
     CategoryDto createCategory(CategoryDto categoryDto);
