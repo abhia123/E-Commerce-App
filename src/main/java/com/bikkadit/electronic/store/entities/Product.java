@@ -2,10 +2,7 @@ package com.bikkadit.electronic.store.entities;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Setter
@@ -39,11 +36,15 @@ public class Product {
     private Date addedDate;
 
     @Column(name = "product_live")
-    private Boolean live;
+    private Boolean isLive;
 
     @Column(name = "product_stock")
-    private Boolean stock;
+    private Boolean isStock;
 
     @Column(name = "product_img")
     private String productImageName;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    private  Category category;
 }

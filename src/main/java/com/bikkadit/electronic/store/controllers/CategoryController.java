@@ -1,10 +1,12 @@
 package com.bikkadit.electronic.store.controllers;
 
 import com.bikkadit.electronic.store.dtos.CategoryDto;
+import com.bikkadit.electronic.store.dtos.ProductDto;
+import com.bikkadit.electronic.store.exceptions.ResourceNotFoundException;
 import com.bikkadit.electronic.store.helper.*;
 import com.bikkadit.electronic.store.services.CategoryService;
 import com.bikkadit.electronic.store.services.FileService;
-import com.bikkadit.electronic.store.services.impl.CategoryServiceImpl;
+import com.bikkadit.electronic.store.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,8 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ProductService productService;
     private Logger logger = LoggerFactory.getLogger(CategoryController.class);
 
     /**
@@ -154,7 +158,8 @@ public class CategoryController {
      * @apiNote Serve Cover Image
      * @param   categoryId
      * @param   response
-     * @throws  IOException
+     * @throws  IOException, ResourceNotFoundException
+     * @since   1.0v
      */
     @GetMapping("/image/{categoryId}")
     public void serveCoverImage(@PathVariable String categoryId, HttpServletResponse response) throws IOException {
@@ -164,5 +169,24 @@ public class CategoryController {
         response.setContentType(MediaType.IMAGE_JPEG_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());
         logger.info("Completed Request for get cover image with category id :{}", categoryId);
+    }
+
+    /**
+     * @author  Abhijit Chandsare
+     * @apiNote Create Product With Category
+     * @param   categoryId
+     * @param   'productdto'
+     * @return  ProductDto,HttpStatus.CREATED
+     * @throws  ResourceNotFoundException
+     * @since   1.0v
+     */
+    @PostMapping("/{categoryId}"+UrlConstants.PRODUCT_URL)
+    public ResponseEntity<ProductDto> createProductWithCategory(@PathVariable("categoryId") String categoryId,
+            @RequestBody ProductDto dto
+    ) {
+        logger.info("Entering Request for create Product with category id :{}", categoryId);
+        ProductDto productWithCategory = productService.createWithCategory(dto, categoryId);
+        logger.info("Completed Request for create Product with category id :{}", categoryId);
+        return new ResponseEntity<>(productWithCategory, HttpStatus.CREATED);
     }
 }

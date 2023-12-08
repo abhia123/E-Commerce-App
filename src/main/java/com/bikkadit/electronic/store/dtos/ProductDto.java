@@ -38,12 +38,14 @@ public class ProductDto {
     private Date addedDate;
 
     @NotEmpty
-    private Boolean live;
+    private Boolean isLive;
 
     @NotEmpty
-    private Boolean stock;
+    private Boolean isStock;
 
     @ImageNameValid
     private String productImageName;
+
+    private CategoryDto category;
 
 }
