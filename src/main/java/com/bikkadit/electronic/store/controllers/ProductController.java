@@ -2,19 +2,24 @@ package com.bikkadit.electronic.store.controllers;
 
 import com.bikkadit.electronic.store.dtos.CategoryDto;
 import com.bikkadit.electronic.store.dtos.ProductDto;
-import com.bikkadit.electronic.store.helper.ApiResponse;
-import com.bikkadit.electronic.store.helper.AppConstants;
-import com.bikkadit.electronic.store.helper.PageableResponse;
-import com.bikkadit.electronic.store.helper.UrlConstants;
+import com.bikkadit.electronic.store.helper.*;
+import com.bikkadit.electronic.store.services.FileService;
 import com.bikkadit.electronic.store.services.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 
 @RestController
 @RequestMapping(UrlConstants.BASE_URL + UrlConstants.PRODUCT_URL)
@@ -23,6 +28,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private FileService fileService;
+
+    @Value("${product.profile.image.path}")
+    private String path;
     Logger logger = LoggerFactory.getLogger(ProductController.class);
 
     /**
@@ -159,6 +169,50 @@ public class ProductController {
         PageableResponse<ProductDto> pageableResponse = productService.searchByTitle(keywords, pageNumber, pageSize, sortBy, sortDir);
         logger.info("Completed request for get all product data with title keywords :{}",keywords);
         return new ResponseEntity<>(pageableResponse, HttpStatus.OK);
+    }
+
+    /**
+     * @author  Abhijit Chandsare
+     * @apiNote upload Product image
+     * @param   productId
+     * @param   image
+     * @return  ImageResponse
+     * @throws  IOException, ResourceNotFoundException
+     * @since   1.0v
+     */
+    @PostMapping("/image/{productId}")
+    public ResponseEntity<ImageResponse> uploadProductImage(
+            @PathVariable String productId,
+            @RequestParam MultipartFile image
+    ) throws IOException {
+        logger.info("Entering Request for upload product image with product id :{}", productId);
+        String fileName = fileService.uploadImage(image, path);
+        ProductDto productDto = productService.getProductById(productId);
+        productDto.setProductImageName(fileName);
+        ProductDto updatedProduct = productService.updateProduct(productDto, productId);
+        ImageResponse response = ImageResponse.builder().imageName(updatedProduct.getProductImageName()).message("Product image is successfully uploaded !!").status(HttpStatus.CREATED).success(true).build();
+        logger.info("Completed Request for upload product image with product id :{}", productId);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+
+    }
+
+
+    /**
+     * @author  Abhijit Chandsare
+     * @apiNote serve Product image
+     * @param   productId
+     * @param   response
+     * @throws  IOException, ResourceNotFoundException
+     * @since   1.0v
+     */
+    @GetMapping(value = "/image/{productId}")
+    public void serveProductImage(@PathVariable String productId, HttpServletResponse response) throws IOException {
+        logger.info("Entering Request for get product image with product id :{}", productId);
+        ProductDto productDto = productService.getProductById(productId);
+        InputStream resource = fileService.getResource(path, productDto.getProductImageName());
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(resource, response.getOutputStream());
+        logger.info("Completed Request for get product image with product id :{}", productId);
     }
 
 }
