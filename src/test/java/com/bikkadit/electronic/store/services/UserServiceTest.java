@@ -44,7 +44,7 @@ public class UserServiceTest {
                 .gender("male")
                 .about("Software developer")
                 .imageName("apc.png")
-                .password("apc")
+                .password("apc@121")
                 .build();
     }
 
@@ -52,10 +52,10 @@ public class UserServiceTest {
     public void createUser() {
 
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
-        UserDto user1 = userService.createUser(modelMapper.map(user, UserDto.class));
-        System.out.println(user1.getName());
-        Assertions.assertNotNull(user1);
-        Assertions.assertEquals("Abhijeet",user1.getName());
+        UserDto userDto = userService.createUser(modelMapper.map(user, UserDto.class));
+        System.out.println(userDto.getName());
+        Assertions.assertNotNull(userDto);
+        Assertions.assertEquals("Abhijeet",userDto.getName());
 
     }
 
@@ -75,17 +75,17 @@ public class UserServiceTest {
         Mockito.when(userRepository.findById(Mockito.anyString())).thenReturn(Optional.of(user));
         Mockito.when(userRepository.save(Mockito.any())).thenReturn(user);
 
-        UserDto updateUser = userService.updateUser(userDto, userId);
-        System.out.println(updateUser.getName());
+        UserDto updatedUser = userService.updateUser(userDto, userId);
+        System.out.println(updatedUser.getName());
         Assertions.assertNotNull(userDto);
     }
 
     @Test
     public void deleteUserTest(){
 
-        String userId="userTest";
+        String userId="userDeleteTest";
 
-        Mockito.when(userRepository.findById("userTest")).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById("userDeleteTest")).thenReturn(Optional.of(user));
         userService.deleteUser(userId);
 
     }
