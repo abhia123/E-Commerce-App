@@ -42,7 +42,7 @@ public class ProductController {
 
     /**
      * @author  Abhijit Chandsare
-     * @apiNote Create Product
+     * @apiNote update Product
      * @param   productId
      * @param   productDto
      * @return  updatedProductDto
