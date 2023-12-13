@@ -1,10 +1,8 @@
 package com.bikkadit.electronic.store.dtos;
 
 import com.bikkadit.electronic.store.validate.ImageNameValid;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Date;
@@ -13,6 +11,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ProductDto {
 
     private String productId;

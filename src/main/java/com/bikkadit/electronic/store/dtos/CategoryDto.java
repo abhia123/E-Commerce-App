@@ -1,10 +1,7 @@
 package com.bikkadit.electronic.store.dtos;
 
 import com.bikkadit.electronic.store.validate.ImageNameValid;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.validation.constraints.Min;
@@ -15,6 +12,7 @@ import javax.validation.constraints.Size;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CategoryDto {
 
 
