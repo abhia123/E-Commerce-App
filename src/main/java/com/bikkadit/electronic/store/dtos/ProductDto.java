@@ -25,27 +25,21 @@ public class ProductDto {
     @Size(min=10,message = "Description is required")
     private String description;
 
-    @NotEmpty
     private Double price;
 
-    @NotEmpty
     private int discountedPrice;
 
-    @NotEmpty
     private Integer quantity;
 
-    @NotEmpty
     private Date addedDate;
 
-    @NotEmpty
     private Boolean isLive;
 
-    @NotEmpty
     private Boolean isStock;
 
     @ImageNameValid
     private String productImageName;
 
-    private CategoryDto category;
+    private CategoryDto categoryDto;
 
 }
