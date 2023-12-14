@@ -50,7 +50,7 @@ public class UserControllerTest {
                 .gender("male")
                 .about("Software developer")
                 .imageName("apc.png")
-                .password("apc@121")
+                .password("Apcd@121")
                 .build();
     }
 
@@ -82,7 +82,6 @@ public class UserControllerTest {
 
         this.mockMvc.perform(
                         MockMvcRequestBuilders.put("/api/users/" + userId)
-                                .header(HttpHeaders.AUTHORIZATION, "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkdXJnZXNoQGRldi5pbiIsImlhdCI6MTY3NTI0OTA0MywiZXhwIjoxNjc1MjY3MDQzfQ.HQbZ4BrQlAgd5X40RZJhSMZ0zgZAfDcQtxJaSy97YZHgdNBV0g2r7-ZXRmw1EkKhkFtdkytG_E6I7MnsxVEZqg")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(convertObjectToJsonString(user))
                                 .accept(MediaType.APPLICATION_JSON)
@@ -93,15 +92,12 @@ public class UserControllerTest {
     }
 
     private String convertObjectToJsonString(Object user) {
-
         try {
             return new ObjectMapper().writeValueAsString(user);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-
-
     }
 
     @Test
@@ -113,7 +109,7 @@ public class UserControllerTest {
                 .gender("male")
                 .about("Software developer")
                 .imageName("abhi.png")
-                .password("apc@123")
+                .password("apc1@123")
                 .build();
         UserDto dtoObject2 = UserDto.builder()
                 .name("ramesh")
@@ -121,7 +117,7 @@ public class UserControllerTest {
                 .gender("male")
                 .about("software developer")
                 .imageName("ramesh.png")
-                .password("ramesh")
+                .password("ramesh@123")
                 .build();
         UserDto dtoObject3 = UserDto.builder()
                 .name("kunal")
@@ -137,7 +133,7 @@ public class UserControllerTest {
                 .gender("male")
                 .about("java developer")
                 .imageName("abc.png")
-                .password("abc")
+                .password("abcd@1234")
                 .build();
 
         PageableResponse<UserDto> pageableResponse = new PageableResponse<>();
